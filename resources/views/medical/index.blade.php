@@ -42,38 +42,33 @@
                     </tr>
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-100">
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="py-4 px-6 font-medium text-caa-dark-navy">MED-24-0012</td>
-                        <td class="py-4 px-6 text-gray-700">James Walker</td>
-                        <td class="py-4 px-6 text-gray-600">Class 1</td>
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Valid
-                            </span>
-                        </td>
-                        <td class="py-4 px-6 text-gray-500">12 Nov 2026</td>
-                        <td class="py-4 px-6 text-right">
-                            <button class="text-gray-400 hover:text-caa-medium-blue font-medium transition">View</button>
-                            <span class="text-gray-300 mx-2">|</span>
-                            <button class="text-gray-400 hover:text-caa-dark-navy font-medium transition">Edit</button>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="py-4 px-6 font-medium text-caa-dark-navy">MED-23-0841</td>
-                        <td class="py-4 px-6 text-gray-700">Sarah Jenkins</td>
-                        <td class="py-4 px-6 text-gray-600">Class 2</td>
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                Expired
-                            </span>
-                        </td>
-                        <td class="py-4 px-6 text-gray-500">01 Feb 2025</td>
-                        <td class="py-4 px-6 text-right">
-                            <button class="text-gray-400 hover:text-caa-medium-blue font-medium transition">View</button>
-                            <span class="text-gray-300 mx-2">|</span>
-                            <button class="text-gray-400 hover:text-caa-dark-navy font-medium transition">Edit</button>
-                        </td>
-                    </tr>
+                    @forelse($applications as $app)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="py-4 px-6 font-medium text-caa-dark-navy">
+                                {{ 'MED-'.\Carbon\Carbon::parse($app->created_at)->format('y').'-'.str_pad($app->id,4,'0',STR_PAD_LEFT) }}
+                            </td>
+                            <td class="py-4 px-6 text-gray-700">{{ $app->full_name }}</td>
+                            <td class="py-4 px-6 text-gray-600">Class {{ $app->certificate_class }}</td>
+                            <td class="py-4 px-6">
+                                @if(in_array($app->status, ['issued','issued_limited']))
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ ucfirst(str_replace('_',' ',$app->status)) }}</span>
+                                @elseif($app->status === 'denied')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Denied</span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">{{ ucfirst($app->status) }}</span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-gray-500">{{ optional($app->validity_start_date)->addYears(1)?->format('d M Y') ?? '-' }}</td>
+                            <td class="py-4 px-6 text-right">
+                                <a href="{{ route('admin.medical.show', $app->id) }}" class="text-caa-medium-blue font-medium mr-2">View</a>
+                                <a href="{{ route('admin.medical.show', $app->id) }}#ame" class="text-gray-400 hover:text-caa-dark-navy font-medium">Review</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-6 px-6 text-center text-gray-500">No applications found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -82,11 +77,11 @@
             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
                     <p class="text-sm text-gray-700">
-                        Showing <span class="font-medium">1</span> to <span class="font-medium">2</span> of <span class="font-medium">45</span> results
+                        Showing <span class="font-medium">{{ $applications->firstItem() ?? 0 }}</span> to <span class="font-medium">{{ $applications->lastItem() ?? 0 }}</span> of <span class="font-medium">{{ $applications->total() }}</span> results
                     </p>
                 </div>
                 <div>
-                    <!-- Pagination... -->
+                    {{ $applications->links() }}
                 </div>
             </div>
         </div>
