@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'CAA admin',
             'email' => 'admin@caa.com',
-            'password' => 'figureitout',
+            'password' => bcrypt('figureitout'),
             'role' => 'admin',
             'status' => 'active',
         ]);
