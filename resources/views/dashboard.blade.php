@@ -67,7 +67,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                     <h3 class="text-lg font-bold text-caa-dark-navy">Pending Approvals</h3>
-                    <a href="#" class="text-sm text-caa-medium-blue hover:text-caa-dark-blue font-medium">View All &rarr;</a>
+                    <a href="{{ route('admin.medical') }}" class="text-sm text-caa-medium-blue hover:text-caa-dark-blue font-medium">View All &rarr;</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -87,7 +87,7 @@
                                 <td class="py-4 px-6 text-gray-600">Skyways Airlines Ltd.</td>
                                 <td class="py-4 px-6 text-gray-500">12 May 2026</td>
                                 <td class="py-4 px-6 text-right">
-                                    <button class="text-caa-medium-blue hover:text-caa-dark-blue font-medium">Review</button>
+                                    <a href="{{ route('admin.medical') }}" class="text-caa-medium-blue hover:text-caa-dark-blue font-medium">Review</a>
                                 </td>
                             </tr>
                             <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
@@ -96,7 +96,7 @@
                                 <td class="py-4 px-6 text-gray-600">John Doe</td>
                                 <td class="py-4 px-6 text-gray-500">10 May 2026</td>
                                 <td class="py-4 px-6 text-right">
-                                    <button class="text-caa-medium-blue hover:text-caa-dark-blue font-medium">Review</button>
+                                    <a href="{{ route('admin.medical') }}" class="text-caa-medium-blue hover:text-caa-dark-blue font-medium">Review</a>
                                 </td>
                             </tr>
                             <tr class="hover:bg-gray-50 transition">
@@ -167,7 +167,7 @@
                         </div>
                         <span class="ml-3 font-medium text-gray-700 group-hover:text-caa-dark-navy">Register New Aircraft</span>
                     </a>
-                    <a href="/medical/create" class="flex items-center p-3 rounded-lg border border-gray-200 hover:border-caa-medium-blue hover:bg-gray-50 transition group">
+                    <a href="{{ route('admin.medical') }}" class="flex items-center p-3 rounded-lg border border-gray-200 hover:border-caa-medium-blue hover:bg-gray-50 transition group">
                         <div class="p-2 bg-gray-100 rounded text-gray-600 group-hover:bg-caa-light-blue group-hover:text-caa-dark-navy transition">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         </div>

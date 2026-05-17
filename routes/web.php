@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MedicalApplicationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::prefix('apply')->name('apply.')->group(function () {
     Route::get('/mro', function () { return view('mro.create'); })->name('mro');
     Route::get('/flight', function () { return view('flight.create'); })->name('flight');
     Route::get('/medical', function () { return view('medical.create'); })->name('medical');
+    Route::post('/medical', [MedicalApplicationController::class, 'store'])->name('medical.store');
     Route::get('/organization', function () { return view('organization.create'); })->name('organization');
 });
 
@@ -39,7 +41,9 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
         Route::get('/aircraft', function () { return view('aircraft.index'); })->name('aircraft');
         Route::get('/mro', function () { return view('mro.index'); })->name('mro');
         Route::get('/flight', function () { return view('flight.index'); })->name('flight');
-        Route::get('/medical', function () { return view('medical.index'); })->name('medical');
+        Route::get('/medical', [MedicalApplicationController::class, 'adminIndex'])->name('medical');
+        Route::get('/medical/{application}', [MedicalApplicationController::class, 'adminShow'])->name('medical.show');
+        Route::post('/medical/{application}/ame-decision', [MedicalApplicationController::class, 'ameDecision'])->name('medical.ameDecision');
         Route::get('/organization', function () { return view('organization.index'); })->name('organization');
     });
 });
