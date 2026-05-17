@@ -14,23 +14,25 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body class="font-sans antialiased text-gray-900 bg-caa-off-white">
+        <div class="flex h-screen overflow-hidden">
+            <!-- Sidebar -->
+            @auth
+                @if(auth()->user()->role === 'admin')
+                    @include('layouts.sidebar')
+                @endif
+            @endauth
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <!-- Main Content Area -->
+            <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                <!-- Header -->
+                @include('layouts.header')
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <!-- Page Content -->
+                <main class="w-full grow p-6">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>
