@@ -6,10 +6,9 @@
 <header class="shrink-0 border-b border-surface-border bg-surface-elevated/80 backdrop-blur px-6 lg:px-8 py-5">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-2xl font-semibold text-white tracking-tight">Organizations</h1>
+            <h1 class="text-2xl font-semibold text-black tracking-tight">Organizations</h1>
             <p class="mt-1 text-sm text-slate-400">Manage registered aviation operators, maintenance orgs, and training schools.</p>
         </div>
-
     </div>
 </header>
 @endsection
@@ -27,7 +26,7 @@
 <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
     <article class="rounded-xl border border-surface-border bg-surface-elevated p-5">
         <p class="text-xs font-medium uppercase tracking-wider text-slate-500">Total registered</p>
-        <p class="mt-2 text-3xl font-semibold text-white">{{ $stats['total'] ?? 0 }}</p>
+        <p class="mt-2 text-3xl font-semibold text-black">{{ $stats['total'] ?? 0 }}</p>
     </article>
     <article class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
         <p class="text-xs font-medium uppercase tracking-wider text-emerald-400/80">Valid approvals</p>
@@ -50,10 +49,10 @@
             <svg class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             <input type="search" id="search" name="search" value="{{ $search }}"
                    placeholder="Search by name or approval number…"
-                   class="w-full rounded-lg border border-surface-border bg-surface-elevated py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-accent focus:ring-1 focus:ring-accent">
+                   class="w-full rounded-lg border border-surface-border bg-surface-elevated py-2.5 pl-10 pr-4 text-sm text-black placeholder-slate-500 focus:border-accent focus:ring-1 focus:ring-accent">
         </div>
         <button type="submit"
-                class="shrink-0 rounded-lg border border-surface-border bg-surface-elevated px-4 py-2.5 text-sm font-medium text-slate-200 hover:bg-white/5 transition">
+                class="shrink-0 rounded-lg border border-surface-border bg-surface-elevated px-4 py-2.5 text-sm font-medium text-black hover:bg-white/5 transition">
             Search
         </button>
     </form>
@@ -93,6 +92,7 @@
                     <th class="px-5 py-3.5 font-medium text-slate-400">Valid until</th>
                     <th class="px-5 py-3.5 font-medium text-slate-400 text-center">Fleet</th>
                     <th class="px-5 py-3.5 font-medium text-slate-400 text-center">Status</th>
+                    <th class="px-5 py-3.5 font-medium text-slate-400 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-surface-border">
@@ -104,16 +104,16 @@
                     @endphp
                     <tr class="hover:bg-white/[0.02] transition">
                         <td class="px-5 py-4">
-                            <span class="font-medium text-white">{{ $org->name }}</span>
+                            <span class="font-medium text-black">{{ $org->name }}</span>
                         </td>
                         <td class="px-5 py-4">
-                            <span class="inline-flex rounded-md bg-surface-border/80 px-2 py-0.5 text-xs font-medium text-slate-300">{{ $org->type }}</span>
+                            <span class="inline-flex rounded-md bg-surface-border/80 px-2 py-0.5 text-xs font-medium text-black">{{ $org->type }}</span>
                         </td>
-                        <td class="px-5 py-4 font-mono text-xs text-slate-300">{{ $org->approval_no }}</td>
-                        <td class="px-5 py-4 text-slate-300">
+                        <td class="px-5 py-4 font-mono text-xs text-black">{{ $org->approval_no }}</td>
+                        <td class="px-5 py-4 text-black">
                             {{ $org->valid_until?->format('M j, Y') ?? '—' }}
                         </td>
-                        <td class="px-5 py-4 text-center text-slate-300">{{ $org->fleet_size }}</td>
+                        <td class="px-5 py-4 text-center text-black">{{ $org->fleet_size }}</td>
                         <td class="px-5 py-4 text-center">
                             @if ($isValid)
                                 <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-medium text-emerald-400">
@@ -129,10 +129,41 @@
                                 <span class="inline-flex rounded-full bg-slate-500/15 px-2.5 py-1 text-xs font-medium text-slate-400">{{ ucfirst($org->status) }}</span>
                             @endif
                         </td>
+                        <td class="px-5 py-4 text-right">
+    <div class="inline-flex items-center gap-2">
+        {{-- View Button --}}
+        <!-- Changed from organization.show -->
+        <a href="{{ route('organization.show', $org->id) }}" 
+           class="rounded-md border border-surface-border bg-surface px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/5 hover:text-black transition"
+           title="View Details">
+            View
+        </a>
+
+        {{-- Edit / Approve Button --}}
+        <!-- Changed from organization.edit -->
+        <a href="{{ route('organization.edit', $org->id) }}" 
+           class="rounded-md border border-surface-border bg-surface px-2.5 py-1.5 text-xs font-medium text-amber-400 hover:bg-amber-500/10 transition"
+           title="Edit & Approve">
+            Edit
+        </a>
+
+        {{-- Delete Button Form --}}
+        <!-- Changed from organization.destroy -->
+        <form action="{{ route('organization.destroy', $org->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this organization? This action cannot be undone.');" class="inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" 
+                    class="rounded-md border border-red-500/20 bg-surface px-2.5 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/10 transition"
+                    title="Delete Organization">
+                Delete
+            </button>
+        </form>
+    </div>
+</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-5 py-16 text-center">
+                        <td colspan="7" class="px-5 py-16 text-center">
                             <div class="mx-auto max-w-sm">
                                 <svg class="mx-auto h-12 w-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                 <p class="mt-4 text-base font-medium text-slate-300">No organizations found</p>

@@ -49,7 +49,7 @@
                     <span class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-500 cursor-not-allowed" title="Coming soon">
                         <svg class="h-5 w-5 shrink-0 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/></svg>
                         {{ $item['label'] }}
-                        <span class="ml-auto text-[10px] uppercase tracking-wider text-gray-400">Soon</span>
+                        
                     </span>
                 @endforeach
 

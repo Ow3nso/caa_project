@@ -25,7 +25,7 @@ class OrganizationController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255', // e.g., AOC, AMO, ATO
-            'approval_no' => 'required|string|max:255|unique:organizations,approval_no', // Unique constraint against renamed column
+            'approval_no' => 'required|string|max:255|unique:organizations,approval_no', 
             'valid_until' => 'required|date',
             'fleet_size' => 'required|integer|min:0',
         ]);
@@ -54,7 +54,7 @@ class OrganizationController extends Controller
             
             $query->where(function ($subQuery) use ($searchTerm) {
                 $subQuery->where('name', 'like', $searchTerm)
-                         ->orWhere('approval_no', 'like', $searchTerm); // Replaced old column key references
+                         ->orWhere('approval_no', 'like', $searchTerm); 
             });
         }
 
@@ -76,5 +76,57 @@ class OrganizationController extends Controller
             : null;
 
         return view('organization.dashboard', compact('organizations', 'stats', 'currentStatus'));
+    }
+
+    /**
+     * Display the specified organization details.
+     */
+    public function show($id)
+    {
+        $organization = Organization::findOrFail($id);
+        return view('organization.show', compact('organization'));
+    }
+
+    /**
+     * Show the form for editing and approving the organization.
+     */
+    public function edit($id)
+    {
+        $organization = Organization::findOrFail($id);
+        return view('organization.edit', compact('organization'));
+    }
+
+    /**
+     * Update the organization details and update its approval status.
+     */
+    public function update(Request $request, $id)
+    {
+        $organization = Organization::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'approval_no' => 'required|string|max:255|unique:organizations,approval_no,' . $organization->id,
+            'valid_until' => 'required|date',
+            'fleet_size' => 'required|integer|min:0',
+            'status' => 'required|string|in:pending,valid', // Allows admin to switch status to approve it
+        ]);
+
+        $organization->update($validatedData);
+
+        return redirect()->route('organization.dashboard')
+            ->with('success', 'Organization details updated and approved successfully.');
+    }
+
+    /**
+     * Remove the specified organization from storage.
+     */
+    public function destroy($id)
+    {
+        $organization = Organization::findOrFail($id);
+        $organization->delete();
+
+        return redirect()->route('organization.dashboard')
+            ->with('success', 'Organization deleted successfully.');
     }
 }

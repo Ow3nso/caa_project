@@ -26,13 +26,13 @@
             @csrf <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Organization Name</label>
                 <input type="text" name="name" value="{{ old('name') }}" required 
-                       class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                       class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-sm text-black focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Organization Type</label>
                 <select name="type" required 
-                        class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-sm text-black focus:outline-none focus:border-blue-500">
                     <option value="">Select Type...</option>
                     <option value="AOC" {{ old('type') == 'AOC' ? 'selected' : '' }}>Air Operator Certificate (AOC)</option>
                     <option value="AMO" {{ old('type') == 'AMO' ? 'selected' : '' }}>Approved Maintenance Org (AMO / Part 145)</option>
