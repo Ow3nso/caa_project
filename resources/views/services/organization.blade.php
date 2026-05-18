@@ -42,7 +42,7 @@
 
                     <div class="mt-12 text-center border-t border-gray-100 pt-8">
                         <p class="text-gray-500 mb-4">Ready to start your application?</p>
-                        <a href="{{ route('apply.organization') }}" class="inline-flex justify-center px-8 py-4 border border-transparent rounded-lg shadow-md text-lg font-bold text-white bg-caa-medium-blue hover:bg-caa-dark-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-caa-medium-blue transition transform hover:-translate-y-1">
+                        <a href="{{ route('organization.create') }}" class="inline-flex justify-center px-8 py-4 border border-transparent rounded-lg shadow-md text-lg font-bold text-white bg-caa-medium-blue hover:bg-caa-dark-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-caa-medium-blue transition transform hover:-translate-y-1">
                             Apply Now
                         </a>
                     </div>
