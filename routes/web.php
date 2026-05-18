@@ -30,6 +30,10 @@ Route::prefix('apply')->name('apply.')->group(function () {
     Route::get('/organization', fn() => view('organization.create'))->name('organization');
 });
 
+// Admin Routes
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+
 
 Route::middleware(['auth'])->group(function () {
 
@@ -43,6 +47,13 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/aircraft', function () { return view('aircraft.index'); })->name('aircraft');
+        Route::get('/mro', function () { return view('mro.index'); })->name('mro');
+        Route::get('/mro/create', function () { return view('mro.create'); })->name('mro.create');
+        Route::get('/flight', function () { return view('flight.index'); })->name('flight');
+        Route::get('/medical', function () { return view('medical.index'); })->name('medical');
+        Route::get('/organization', function () { return view('organization.index'); })->name('organization');
     
     Route::prefix('flight-ops')->name('flight-ops.')->group(function () {
         Route::get('/',             [FlightOpsController::class, 'dashboard'])->name('dashboard');
